@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
-namespace Hello_World
+namespace HelloWorld
 {
     public class MvcApplication : System.Web.HttpApplication
     {
