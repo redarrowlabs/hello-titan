@@ -41,7 +41,8 @@ namespace HelloWorld
 
                             identity.AddClaim(new Claim("access_token", accessToken));
 
-                            var userInfoClient = new UserInfoClient("https://sandbox.redarrow.io/auth/connect/userinfo");
+                            var userInfoClient =
+                                new UserInfoClient("https://sandbox.redarrow.io/auth/connect/userinfo");
                             var userInfo = await userInfoClient.GetAsync(accessToken);
 
                             identity.AddClaims(userInfo.Claims);
