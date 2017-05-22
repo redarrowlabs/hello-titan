@@ -24,7 +24,7 @@ namespace HelloWorld
                 {
                     SignInAsAuthenticationType = CookieAuthenticationDefaults.AuthenticationType,
 
-                    ClientId = "insert your application key here",
+                    ClientId = "INSERT YOUR APP KEY HERE",
                     Authority = "https://sandbox.redarrow.io/auth",
                     RedirectUri = "http://localhost:8080/auth-callback",
 
@@ -33,18 +33,18 @@ namespace HelloWorld
 
                     Notifications = new OpenIdConnectAuthenticationNotifications
                     {
-                        AuthorizationCodeReceived = notification =>
+                        AuthorizationCodeReceived = async notification =>
                         {
                             var identity = notification.AuthenticationTicket.Identity;
 
-                            identity.AddClaim(new Claim("access_token", notification.ProtocolMessage.AccessToken));
-                            identity.AddClaim(new Claim("expires_at", DateTime.UtcNow.AddSeconds(
-                                    double.Parse(notification.ProtocolMessage.ExpiresIn))
-                                .ToString("O")));
-                            //identity.AddClaim(new Claim("refresh_token", notification.ProtocolMessage.RefreshToken));
-                            identity.AddClaim(new Claim("id_token", notification.ProtocolMessage.IdToken));
+                            var accessToken = notification.ProtocolMessage.AccessToken;
 
-                            return Task.FromResult(0);
+                            identity.AddClaim(new Claim("access_token", accessToken));
+
+                            var userInfoClient = new UserInfoClient("https://sandbox.redarrow.io/auth/connect/userinfo");
+                            var userInfo = await userInfoClient.GetAsync(accessToken);
+
+                            identity.AddClaims(userInfo.Claims);
                         }
                     }
                 });

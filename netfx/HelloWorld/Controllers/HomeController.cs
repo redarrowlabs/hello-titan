@@ -13,14 +13,10 @@ namespace HelloWorld.Controllers
         {
             if (ClaimsPrincipal.Current.Identity.IsAuthenticated)
             {
-                var userInfoClient = new UserInfoClient("https://test.redarrow.io/auth/connect/userinfo");
-
-                var userInfo = await userInfoClient.GetAsync(ClaimsPrincipal.Current.FindFirst("access_token").Value);
-
                 return View(new UserModel
                 {
-                    FirstName = userInfo.Claims.First(x => x.Type == "given_name").Value,
-                    LastName = userInfo.Claims.First(x => x.Type == "family_name").Value
+                    FirstName = ClaimsPrincipal.Current.FindFirst("given_name").Value,
+                    LastName = ClaimsPrincipal.Current.FindFirst("family_name").Value
                 });
             }
             return View();
