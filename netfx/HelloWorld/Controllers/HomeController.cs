@@ -13,7 +13,7 @@ namespace HelloWorld.Controllers
         {
             if (ClaimsPrincipal.Current.Identity.IsAuthenticated)
             {
-                var userInfoClient = new UserInfoClient("https://sandbox.redarrow.io/auth/connect/userinfo");
+                var userInfoClient = new UserInfoClient("https://test.redarrow.io/auth/connect/userinfo");
 
                 var userInfo = await userInfoClient.GetAsync(ClaimsPrincipal.Current.FindFirst("access_token").Value);
 
